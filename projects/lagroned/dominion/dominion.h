@@ -128,4 +128,19 @@ int getWinners(int players[MAX_PLAYERS], struct gameState *state);
 /* Set array position of each player who won (remember ties!) to
    1, others to 0 */
 
+//Re-fractored smithy switch function
+void smithyFunction(int hand, int currentPlayer, struct gameState* state);//Card Action for Smithy to Add three and discard
+
+//Re-fractored adventurer switch function
+void adventurerFunction(int currentPlayer, struct gameState* state);
+
+//Re-fractored village function
+void villageFunction (int hand, int currentPlayer, struct gameState* state);
+
+//Re-fractored Council Room Function
+void council_roomFunction(int hand, int currentPlayer, struct gameState* state);
+
+//Re-fractored Gardens Fucntion
+int gardensFunction();
+
 #endif
