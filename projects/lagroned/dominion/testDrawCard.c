@@ -66,7 +66,7 @@ int main () {
     checkDrawCard(p, &G);
   }
 
-  printf ("ALL TESTS OK\n");
+  printf ("ALL TESTS OK from test DrawCard\n");
 
   exit(0);
 

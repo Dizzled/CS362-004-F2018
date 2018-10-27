@@ -1,0 +1,159 @@
+        -:    0:Source:cardtest2.c
+        -:    0:Graph:./cardtest2.gcno
+        -:    0:Data:./cardtest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: cardtest2.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:#include "interface.h"
+        -:   23:/*
+        -:   24: * Simple C Test Suite
+        -:   25: */
+        -:   26:/*Part of the ASSERTTRUE test*/
+function aFailed called 1 returned 100% blocks executed 100%
+        1:   27:void aFailed(int line){
+        -:   28:    
+        1:   29:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+        1:   30:}
+        -:   31:/*First test of the adventurer card functionality*/
+function test1 called 1 returned 100% blocks executed 79%
+        1:   32:void test1() {
+        1:   33:    int treasureBefore = 0, treasureAfter = 0, discardBeforeP1 = 0, discardAfterP1 = 0;
+        -:   34:    int* bonus;
+        -:   35:    int card, choice1, choice2, choice3, handPos, ret,r;
+        -:   36:    struct gameState state;
+        -:   37:    
+        1:   38:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   39:                    remodel, smithy, village, baron, great_hall};
+        -:   40:    
+        -:   41:    
+        -:   42:    /*Random Game Initialization Borrowed from betterTestDrawCard.c*/
+        1:   43:    memset(&state, 23, sizeof(struct gameState)); 
+        1:   44:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        -:   45:    
+        -:   46:    /*Test that game was initialized*/
+       1*:   47:    ASSERTTRUE(r != -1,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   48:    /*Test to see if silver, copper or gold are present in deck if zero need to initalize the deck with treasure*/
+        3:   49:    for(int k = 0; k < 2; k++ ){
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+       12:   50:        for(int j = 0; j < 5; j++){        
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        -:   51:                              
+       10:   52:                if(state.hand[k][j] == copper){
+branch  0 taken 40% (fallthrough)
+branch  1 taken 60%
+        -:   53:                    //printf("Copper Found:Player %d\n",k);
+        4:   54:                    treasureBefore++;
+        6:   55:                }else if(state.hand[k][j] == gold){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   56:                    //printf("Gold Found:Player %d\n",k);
+    #####:   57:                    treasureBefore++;
+        -:   58:                    }
+        6:   59:                else if(state.hand[k][j] == silver){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   60:                    //printf("Silver Found:Player %d\n",k);
+    #####:   61:                    treasureBefore++;    
+        -:   62:                }
+        -:   63:            }
+        -:   64:       
+        -:   65:        }
+        -:   66:    /*Test to compare before and after Adventurer card is played*/
+        3:   67:    for(int k = 0; k < 2; k++ ){
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        2:   68:        state.whoseTurn = k;
+        2:   69:        discardBeforeP1 = state.discardCount[k];
+        2:   70:        cardEffect(adventurer,0,0,0,&state,0, 0);
+call    0 returned 100%
+        -:   71:        
+       12:   72:        for(int j = 0; j < 5; j++){        
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        -:   73:                
+       10:   74:                if(state.hand[k][j] == copper){
+branch  0 taken 60% (fallthrough)
+branch  1 taken 40%
+        6:   75:                    printf("Copper Found:Player %d\n",k);
+call    0 returned 100%
+        6:   76:                    treasureAfter++;
+        4:   77:                }else if(state.hand[k][j] == gold){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   78:                    printf("Gold Found:Player %d\n",k);
+call    0 never executed
+    #####:   79:                    treasureAfter++;
+        -:   80:                    }
+        4:   81:                else if(state.hand[k][j] == silver){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   82:                    printf("Silver Found:Player %d\n",k);
+call    0 never executed
+    #####:   83:                    treasureAfter++;    
+        -:   84:                }
+        -:   85:            }
+        -:   86:        /*Check the discard Pile to see if cards were discarded for player 1 only*/
+        2:   87:         ASSERTTRUE(discardBeforeP1 < state.discardCount[k],__LINE__);
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+call    2 returned 100%
+call    3 returned 100%
+        -:   88:        }
+        -:   89:    /*Check whether there is more treasure*/
+       1*:   90:    ASSERTTRUE(treasureBefore < treasureAfter,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   91:    
+        -:   92:    
+        -:   93:
+        1:   94:}
+function main called 1 returned 100% blocks executed 100%
+        1:   95:int main(int argc, char** argv) {
+        1:   96:    printf("%%SUITE_STARTING%% cardtest2\n");
+call    0 returned 100%
+        1:   97:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   98:
+        1:   99:    printf("%%TEST_STARTED%% test1 (cardtest2)\n");
+call    0 returned 100%
+        1:  100:    test1();
+call    0 returned 100%
+        1:  101:    printf("%%TEST_FINISHED%% test1 (cardtest2) \n");
+call    0 returned 100%
+        -:  102:
+        -:  103: 
+        1:  104:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:  105:
+        1:  106:    return (EXIT_SUCCESS);
+        -:  107:}

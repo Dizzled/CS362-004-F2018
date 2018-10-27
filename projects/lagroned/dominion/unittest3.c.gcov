@@ -1,0 +1,158 @@
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 3
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: unittest3.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:
+        -:   13:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   14:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   15:
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:
+        -:   23:/*
+        -:   24: * Simple C Test 
+        -:   25: */
+        -:   26:        
+        -:   27:/*Added from testShuffle*/
+        -:   28:int compare(const int* a, const int* b);
+        -:   29:/*Part of Assertion Test*/
+function aFailed called 9 returned 100% blocks executed 100%
+        9:   30:void aFailed(int line){
+        -:   31:    
+        9:   32:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+        9:   33:}
+        -:   34:
+function test1 called 1 returned 100% blocks executed 100%
+        1:   35:void test1() {
+        -:   36:   
+        -:   37:    struct gameState state;
+        1:   38:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   39:                    remodel, smithy, village, baron, great_hall};
+        -:   40:    int p, deckCount, discardCount,handCount,r, gameOver;
+        -:   41:    
+        -:   42:    /*Intialize the game*/
+        1:   43:    memset(&state, 23, sizeof(struct gameState)); 
+        1:   44:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        1:   45:    state.supplyCount[province] = 8;
+        -:   46:    
+       10:   47:    for(int i = 8; i > -1; i--){
+branch  0 taken 90%
+branch  1 taken 10% (fallthrough)
+        -:   48:        
+        9:   49:       printf("Number of Province Cards: %d\n", i); 
+call    0 returned 100%
+        9:   50:       gameOver = isGameOver(&state);
+call    0 returned 100%
+        9:   51:       printf("Game Over Return: %d\n", gameOver);
+call    0 returned 100%
+        9:   52:       ASSERTTRUE(gameOver == 1,__LINE__);
+branch  0 taken 89% (fallthrough)
+branch  1 taken 11%
+call    2 returned 100%
+call    3 returned 100%
+        -:   53:       /*Remove a province card*/
+        9:   54:       state.supplyCount[province]--;
+        -:   55:    }
+        -:   56:    
+        1:   57:}
+        -:   58:
+function test2 called 1 returned 100% blocks executed 100%
+        1:   59:void test2() {
+        -:   60:   
+        -:   61:    struct gameState state;
+        1:   62:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   63:                    remodel, smithy, village, baron, great_hall};
+        -:   64:    int p, deckCount, discardCount,handCount,r, gameOver;
+        -:   65:    
+        -:   66:    /*Intialize the game with two players*/
+        1:   67:    memset(&state, 23, sizeof(struct gameState)); 
+        1:   68:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        1:   69:    state.supplyCount[province] = 8;
+        -:   70:    
+       28:   71:    for(int k = 0; k < 27; k++){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:   72:        /*Zero Out the values for all cards*/
+       27:   73:        state.supplyCount[k] = 0;
+       27:   74:        printf("Supply Count Starting Quantities: %d\n", state.supplyCount[k]);
+call    0 returned 100%
+        -:   75:    }
+        -:   76:    
+        -:   77:    
+        -:   78:    /*
+        -:   79:     * Checking the gameover test for if three supply piles
+        -:   80:     * are at 0
+        -:   81:     */
+        1:   82:    gameOver = 1;
+        1:   83:    int i = 0;
+       25:   84:    while(gameOver == 1){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:   85:       
+       24:   86:       gameOver = isGameOver(&state);
+call    0 returned 100%
+       24:   87:       printf("Game Over Return: %d\n", gameOver);
+call    0 returned 100%
+       24:   88:       ASSERTTRUE(gameOver == 1,__LINE__);
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+call    2 returned 100%
+call    3 returned 100%
+        -:   89:       /*Remove a province card*/
+       24:   90:       state.supplyCount[i]+=3;
+       24:   91:       printf("Supply Values for Cards at %d = %d\n", i, state.supplyCount[i]);
+call    0 returned 100%
+       24:   92:       i++;
+        -:   93:    }
+        -:   94:    
+        1:   95:}
+        -:   96:
+        -:   97:
+        -:   98:
+function main called 1 returned 100% blocks executed 100%
+        1:   99:int main(int argc, char** argv) {
+        -:  100: 
+        1:  101:    printf("%%SUITE_STARTING%% unittest1\n");
+call    0 returned 100%
+        1:  102:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:  103:    
+        1:  104:    printf("%%TEST_STARTED%% test1 (unittest1)\n");
+call    0 returned 100%
+        -:  105:    
+        1:  106:    test1();
+call    0 returned 100%
+        -:  107:    
+        1:  108:    printf("%%TEST_FINISHED%%\n");
+call    0 returned 100%
+        -:  109:    
+        1:  110:    printf("%%TEST_STARTED%% test2 (unittest1)\n");
+call    0 returned 100%
+        -:  111:    
+        1:  112:    test2();
+call    0 returned 100%
+        -:  113:
+        1:  114:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:  115:
+        1:  116:    return (EXIT_SUCCESS);
+        -:  117:}

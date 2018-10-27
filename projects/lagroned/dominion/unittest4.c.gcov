@@ -1,0 +1,135 @@
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: unittest4.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:
+        -:   23:/*
+        -:   24: * Simple C Test 
+        -:   25: */
+        -:   26:        
+        -:   27:/*Added from testShuffle*/
+        -:   28:int compare(const int* a, const int* b);
+        -:   29:/*Part of Assertion Test*/
+function aFailed called 2 returned 100% blocks executed 100%
+        2:   30:void aFailed(int line){
+        -:   31:    
+        2:   32:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+        2:   33:}
+        -:   34:/*Test for uninitialized and Game State Initialized*/
+function test1 called 1 returned 100% blocks executed 86%
+        1:   35:void test1() {
+        -:   36:   struct gameState state;
+        1:   37:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   38:                    remodel, smithy, village, baron, great_hall};
+        -:   39:    int p, deckCount, discardCount,handCount,r, gameOver;
+        -:   40:    
+        1:   41:    int player = whoseTurn(&state);
+call    0 returned 100%
+        -:   42:    
+        -:   43:    /*Uninitialized turn = 0*/
+        1:   44:    printf("Player %d Turn\n", player);
+call    0 returned 100%
+       1*:   45:    ASSERTTRUE((whoseTurn(&state) == NULL),__LINE__);
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+call    3 never executed
+call    4 returned 100%
+        -:   46:    
+        -:   47:    /*Intialize the game*/
+        1:   48:    memset(&state, 23, sizeof(struct gameState)); 
+        -:   49:    
+        1:   50:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        -:   51:    
+        1:   52:    state.whoseTurn = 4;
+        1:   53:    player = whoseTurn(&state);
+call    0 returned 100%
+        1:   54:    printf("Player %d Turn\n", player);
+call    0 returned 100%
+       1*:   55:    ASSERTTRUE((whoseTurn(&state) == 0),__LINE__);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0%
+call    3 returned 100%
+call    4 never executed
+        -:   56: 
+        1:   57:}
+        -:   58:/*Test for return values for initialized game with incorrect whose turn input*/
+function test2 called 1 returned 100% blocks executed 88%
+        1:   59:void test2() {
+        -:   60:    struct gameState state;
+        -:   61:    int r;
+        1:   62:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   63:                    remodel, smithy, village, baron, great_hall};
+        1:   64:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        -:   65:    
+        1:   66:    state.whoseTurn = 15693250560;
+        1:   67:    int player = whoseTurn(&state);
+call    0 returned 100%
+        1:   68:    printf("Player %d Turn\n", player);
+call    0 returned 100%
+       1*:   69:    ASSERTTRUE((whoseTurn(&state) > 0),__LINE__);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0%
+call    3 returned 100%
+call    4 never executed
+        -:   70: 
+        1:   71:}
+        -:   72:
+function main called 1 returned 100% blocks executed 100%
+        1:   73:int main(int argc, char** argv) {
+        -:   74: 
+        1:   75:    printf("%%SUITE_STARTING%% unittest4\n");
+call    0 returned 100%
+        1:   76:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   77:    
+        1:   78:    printf("%%TEST_STARTED%% test1 (unittest1)\n");
+call    0 returned 100%
+        -:   79:    
+        1:   80:    test1();
+call    0 returned 100%
+        -:   81:    
+        1:   82:    printf("%%TEST_FINISHED%%\n");
+call    0 returned 100%
+        -:   83:
+        1:   84:    printf("%%TEST_STARTED%% test2 (unittest1)\n");
+call    0 returned 100%
+        -:   85:    
+        1:   86:    test2();
+call    0 returned 100%
+        -:   87:    
+        1:   88:    printf("%%TEST_FINISHED%% test2 (unittest1) \n");
+call    0 returned 100%
+        -:   89:
+        1:   90:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:   91:
+        1:   92:    return (EXIT_SUCCESS);
+        -:   93:}

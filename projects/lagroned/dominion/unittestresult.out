@@ -1,0 +1,1143 @@
+File 'unittest1.c'
+Lines executed:100.00% of 40
+Branches executed:100.00% of 12
+Taken at least once:91.67% of 12
+Calls executed:95.45% of 22
+Creating 'unittest1.c.gcov'
+
+        -:    0:Source:unittest1.c
+        -:    0:Graph:unittest1.gcno
+        -:    0:Data:unittest1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: unittest1.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:
+        -:   13:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   14:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   15:
+        -:   16:#include <time.h>
+        -:   17:#include <assert.h>
+        -:   18:#include <stdio.h>
+        -:   19:#include <stdlib.h>
+        -:   20:#include "dominion.h"
+        -:   21:#include "dominion_helpers.h"
+        -:   22:#include "rngs.h"
+        -:   23:
+        -:   24:/*
+        -:   25: * Simple C Test 
+        -:   26: */
+        -:   27:        
+        -:   28:int playerOne = 0;
+        -:   29:int playerTwo = 1;
+        -:   30:int line;
+        -:   31:
+        -:   32:
+        -:   33:/*Added from testShuffle*/
+        -:   34:int compare(const int* a, const int* b);
+        -:   35:/*Part of Assertion Test*/
+function aFailed called 3 returned 100% blocks executed 100%
+        3:   36:void aFailed(int line){
+        -:   37:    
+        3:   38:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+        3:   39:}
+        -:   40:
+function test1 called 1 returned 100% blocks executed 90%
+        1:   41:void test1() {
+        -:   42:   
+        -:   43:   /*Code borrowed to initialize the game*/
+        1:   44:  int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   45:	       remodel, smithy, village, baron, great_hall};
+        -:   46:  
+        -:   47:  struct gameState state;
+        1:   48:  SelectStream(2);
+call    0 returned 100%
+        1:   49:  PutSeed(3);
+call    0 returned 100%
+        1:   50:  int p,r, discardCount, handCount, count = 0;
+        -:   51:  
+        -:   52:
+        -:   53:  /*Sections of Code borrowed from testDrawCard Simple Fixed Test*/
+        3:   54:  for (p = 0; p < 2; p++) {
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        -:   55:            
+        2:   56:          int deckCount = state.deckCount[p];
+        2:   57:	  state.deckCount[p] = deckCount;
+        -:   58:          
+        2:   59:          int ret = shuffle(p,&state);
+call    0 returned 100%
+        -:   60:            
+       2*:   61:          ASSERTTRUE(deckCount == state.deckCount[p],__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   62:            
+        -:   63:          }
+        1:   64:}    
+        -:   65: 
+        -:   66:
+        -:   67:
+function test2 called 1 returned 100% blocks executed 100%
+        1:   68:void test2() {
+        -:   69:    
+        -:   70:  /*Code borrowed to initialize the game*/
+        1:   71:  int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   72:	       remodel, smithy, village, baron, great_hall};
+        -:   73:  
+        -:   74:  struct gameState state;
+        1:   75:  SelectStream(2);
+call    0 returned 100%
+        1:   76:  PutSeed(3);
+call    0 returned 100%
+        1:   77:  int p,r, discardCount, handCount, count = 0;
+        -:   78: 
+        1:   79:  r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        1:   80:  printf("Deck Count:%d\n",state.deckCount[0]);
+call    0 returned 100%
+        -:   81:  int *storedDeck1[2]; 
+        3:   82:    for (int i=0; i<2; i++){ 
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        2:   83:         storedDeck1[i] = (int *)malloc(state.deckCount[0] * sizeof(int));
+        -:   84:    }
+        -:   85:  /*Store Decks to Compare to Each Other*/
+        6:   86:  for(int k = 0; k < state.deckCount[0]; k++){
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        5:   87:      storedDeck1[0][k] = state.deck[0][k];
+        -:   88:      }
+        -:   89: 
+        1:   90:  shuffle(0,&state);
+call    0 returned 100%
+        -:   91:  /*Test that Card Decks Are Not Equal*/
+        6:   92:  for(int t = 0; t < state.deckCount[0]; t++){
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        5:   93:      ASSERTTRUE(storedDeck1[0][t] != state.deck[0][t],__LINE__);
+branch  0 taken 60% (fallthrough)
+branch  1 taken 40%
+call    2 returned 100%
+call    3 returned 100%
+        -:   94:      }
+        -:   95: 
+        -:   96:  
+        -:   97:  
+        -:   98:
+        1:   99:}
+        -:  100:
+function main called 1 returned 100% blocks executed 100%
+        1:  101:int main(int argc, char** argv) {
+        -:  102: 
+        1:  103:    printf("%%SUITE_STARTING%% unittest1\n");
+call    0 returned 100%
+        1:  104:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:  105:    
+        1:  106:    printf("%%TEST_STARTED%% test1 (unittest1)\n");
+call    0 returned 100%
+        -:  107:    
+        1:  108:    test1();
+call    0 returned 100%
+        -:  109:    
+        1:  110:    printf("%%TEST_FINISHED%%\n");
+call    0 returned 100%
+        -:  111:
+        1:  112:    printf("%%TEST_STARTED%% test2 (unittest1)\n");
+call    0 returned 100%
+        -:  113:    
+        1:  114:    test2();
+call    0 returned 100%
+        -:  115:    
+        1:  116:    printf("%%TEST_FINISHED%% test2 (unittest1) \n");
+call    0 returned 100%
+        -:  117:
+        1:  118:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:  119:
+        1:  120:    return (EXIT_SUCCESS);
+        -:  121:}
+File 'unittest2.c'
+Lines executed:100.00% of 23
+Branches executed:100.00% of 10
+Taken at least once:100.00% of 10
+Calls executed:100.00% of 22
+Creating 'unittest2.c.gcov'
+
+        -:    0:Source:unittest2.c
+        -:    0:Graph:unittest2.gcno
+        -:    0:Data:unittest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 2
+        -:    3: */
+        -:    4:
+        -:    5:/* 
+        -:    6: * File: unittest2.c
+        -:    7: * Author: Dustin LaGrone
+        -:    8: * Created on October 18, 2018
+        -:    9: */
+        -:   10:
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:
+        -:   23:/*
+        -:   24: * Simple C Test 
+        -:   25: */
+        -:   26:        
+        -:   27:/*Added from testShuffle*/
+        -:   28:int compare(const int* a, const int* b);
+        -:   29:/*Part of Assertion Test*/
+function aFailed called 30 returned 100% blocks executed 100%
+       30:   30:void aFailed(int line){
+        -:   31:    
+       30:   32:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+       30:   33:}
+        -:   34:
+function test1 called 1 returned 100% blocks executed 100%
+        1:   35:void test1() {
+        -:   36:   
+        1:   37:  int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   38:	       remodel, smithy, village, baron, great_hall};
+        -:   39:
+        1:   40:  int returnedCost[10] = {};
+        -:   41:  
+        1:   42:  printf("Size of K: %d\n",sizeof(k)/sizeof(k[0]));
+call    0 returned 100%
+        -:   43:  
+       11:   44:  for(int i = 0; i < sizeof(k)/sizeof(k[0]); i++){
+branch  0 taken 91%
+branch  1 taken 9% (fallthrough)
+       10:   45:      returnedCost[i] = getCost(k[i]);
+call    0 returned 100%
+       10:   46:      printf("Card Costs: %d\n", returnedCost[i]);
+call    0 returned 100%
+        -:   47:     
+        -:   48:      /*Should return cost of six for Adventurer*/
+       10:   49:      ASSERTTRUE(getCost(k[i]) == 6,__LINE__);
+call    0 returned 100%
+branch  1 taken 90% (fallthrough)
+branch  2 taken 10%
+call    3 returned 100%
+call    4 returned 100%
+        -:   50:      /*Should return cost of five for Council Room*/
+       10:   51:      ASSERTTRUE(getCost(k[i]) == 5,__LINE__);
+call    0 returned 100%
+branch  1 taken 80% (fallthrough)
+branch  2 taken 20%
+call    3 returned 100%
+call    4 returned 100%
+        -:   52:      /*Should return cost of four for Feast*/
+       10:   53:      ASSERTTRUE(getCost(k[i]) == 4,__LINE__);
+call    0 returned 100%
+branch  1 taken 50% (fallthrough)
+branch  2 taken 50%
+call    3 returned 100%
+call    4 returned 100%
+        -:   54:      /*Should return cost of four for Gardens*/
+       10:   55:      ASSERTTRUE(getCost(k[i]) == 3,__LINE__);    
+call    0 returned 100%
+branch  1 taken 80% (fallthrough)
+branch  2 taken 20%
+call    3 returned 100%
+call    4 returned 100%
+        -:   56:  }
+        1:   57:}
+        -:   58:
+        -:   59:
+        -:   60:
+function main called 1 returned 100% blocks executed 100%
+        1:   61:int main(int argc, char** argv) {
+        -:   62: 
+        1:   63:    printf("%%SUITE_STARTING%% unittest1\n");
+call    0 returned 100%
+        1:   64:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   65:    
+        1:   66:    printf("%%TEST_STARTED%% test1 (unittest1)\n");
+call    0 returned 100%
+        -:   67:    
+        1:   68:    test1();
+call    0 returned 100%
+        -:   69:    
+        1:   70:    printf("%%TEST_FINISHED%%\n");
+call    0 returned 100%
+        -:   71:
+        1:   72:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:   73:
+        1:   74:    return (EXIT_SUCCESS);
+        -:   75:}
+        -:   76:
+File 'unittest3.c'
+Lines executed:100.00% of 43
+Branches executed:100.00% of 10
+Taken at least once:100.00% of 10
+Calls executed:100.00% of 22
+Creating 'unittest3.c.gcov'
+
+        -:    0:Source:unittest3.c
+        -:    0:Graph:unittest3.gcno
+        -:    0:Data:unittest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 3
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: unittest3.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:
+        -:   13:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   14:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   15:
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:
+        -:   23:/*
+        -:   24: * Simple C Test 
+        -:   25: */
+        -:   26:        
+        -:   27:/*Added from testShuffle*/
+        -:   28:int compare(const int* a, const int* b);
+        -:   29:/*Part of Assertion Test*/
+function aFailed called 9 returned 100% blocks executed 100%
+        9:   30:void aFailed(int line){
+        -:   31:    
+        9:   32:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+        9:   33:}
+        -:   34:
+function test1 called 1 returned 100% blocks executed 100%
+        1:   35:void test1() {
+        -:   36:   
+        -:   37:    struct gameState state;
+        1:   38:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   39:                    remodel, smithy, village, baron, great_hall};
+        -:   40:    int p, deckCount, discardCount,handCount,r, gameOver;
+        -:   41:    
+        -:   42:    /*Intialize the game*/
+        1:   43:    memset(&state, 23, sizeof(struct gameState)); 
+        1:   44:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        1:   45:    state.supplyCount[province] = 8;
+        -:   46:    
+       10:   47:    for(int i = 8; i > -1; i--){
+branch  0 taken 90%
+branch  1 taken 10% (fallthrough)
+        -:   48:        
+        9:   49:       printf("Number of Province Cards: %d\n", i); 
+call    0 returned 100%
+        9:   50:       gameOver = isGameOver(&state);
+call    0 returned 100%
+        9:   51:       printf("Game Over Return: %d\n", gameOver);
+call    0 returned 100%
+        9:   52:       ASSERTTRUE(gameOver == 1,__LINE__);
+branch  0 taken 89% (fallthrough)
+branch  1 taken 11%
+call    2 returned 100%
+call    3 returned 100%
+        -:   53:       /*Remove a province card*/
+        9:   54:       state.supplyCount[province]--;
+        -:   55:    }
+        -:   56:    
+        1:   57:}
+        -:   58:
+function test2 called 1 returned 100% blocks executed 100%
+        1:   59:void test2() {
+        -:   60:   
+        -:   61:    struct gameState state;
+        1:   62:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   63:                    remodel, smithy, village, baron, great_hall};
+        -:   64:    int p, deckCount, discardCount,handCount,r, gameOver;
+        -:   65:    
+        -:   66:    /*Intialize the game with two players*/
+        1:   67:    memset(&state, 23, sizeof(struct gameState)); 
+        1:   68:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        1:   69:    state.supplyCount[province] = 8;
+        -:   70:    
+       28:   71:    for(int k = 0; k < 27; k++){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:   72:        /*Zero Out the values for all cards*/
+       27:   73:        state.supplyCount[k] = 0;
+       27:   74:        printf("Supply Count Starting Quantities: %d\n", state.supplyCount[k]);
+call    0 returned 100%
+        -:   75:    }
+        -:   76:    
+        -:   77:    
+        -:   78:    /*
+        -:   79:     * Checking the gameover test for if three supply piles
+        -:   80:     * are at 0
+        -:   81:     */
+        1:   82:    gameOver = 1;
+        1:   83:    int i = 0;
+       25:   84:    while(gameOver == 1){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+        -:   85:       
+       24:   86:       gameOver = isGameOver(&state);
+call    0 returned 100%
+       24:   87:       printf("Game Over Return: %d\n", gameOver);
+call    0 returned 100%
+       24:   88:       ASSERTTRUE(gameOver == 1,__LINE__);
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+call    2 returned 100%
+call    3 returned 100%
+        -:   89:       /*Remove a province card*/
+       24:   90:       state.supplyCount[i]+=3;
+       24:   91:       printf("Supply Values for Cards at %d = %d\n", i, state.supplyCount[i]);
+call    0 returned 100%
+       24:   92:       i++;
+        -:   93:    }
+        -:   94:    
+        1:   95:}
+        -:   96:
+        -:   97:
+        -:   98:
+function main called 1 returned 100% blocks executed 100%
+        1:   99:int main(int argc, char** argv) {
+        -:  100: 
+        1:  101:    printf("%%SUITE_STARTING%% unittest1\n");
+call    0 returned 100%
+        1:  102:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:  103:    
+        1:  104:    printf("%%TEST_STARTED%% test1 (unittest1)\n");
+call    0 returned 100%
+        -:  105:    
+        1:  106:    test1();
+call    0 returned 100%
+        -:  107:    
+        1:  108:    printf("%%TEST_FINISHED%%\n");
+call    0 returned 100%
+        -:  109:    
+        1:  110:    printf("%%TEST_STARTED%% test2 (unittest1)\n");
+call    0 returned 100%
+        -:  111:    
+        1:  112:    test2();
+call    0 returned 100%
+        -:  113:
+        1:  114:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:  115:
+        1:  116:    return (EXIT_SUCCESS);
+        -:  117:}
+File 'unittest4.c'
+Lines executed:100.00% of 34
+Branches executed:100.00% of 6
+Taken at least once:50.00% of 6
+Calls executed:88.89% of 27
+Creating 'unittest4.c.gcov'
+
+        -:    0:Source:unittest4.c
+        -:    0:Graph:unittest4.gcno
+        -:    0:Data:unittest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: unittest4.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:
+        -:   23:/*
+        -:   24: * Simple C Test 
+        -:   25: */
+        -:   26:        
+        -:   27:/*Added from testShuffle*/
+        -:   28:int compare(const int* a, const int* b);
+        -:   29:/*Part of Assertion Test*/
+function aFailed called 2 returned 100% blocks executed 100%
+        2:   30:void aFailed(int line){
+        -:   31:    
+        2:   32:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+        2:   33:}
+        -:   34:/*Test for uninitialized and Game State Initialized*/
+function test1 called 1 returned 100% blocks executed 86%
+        1:   35:void test1() {
+        -:   36:   struct gameState state;
+        1:   37:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   38:                    remodel, smithy, village, baron, great_hall};
+        -:   39:    int p, deckCount, discardCount,handCount,r, gameOver;
+        -:   40:    
+        1:   41:    int player = whoseTurn(&state);
+call    0 returned 100%
+        -:   42:    
+        -:   43:    /*Uninitialized turn = 0*/
+        1:   44:    printf("Player %d Turn\n", player);
+call    0 returned 100%
+       1*:   45:    ASSERTTRUE((whoseTurn(&state) == NULL),__LINE__);
+call    0 returned 100%
+branch  1 taken 0% (fallthrough)
+branch  2 taken 100%
+call    3 never executed
+call    4 returned 100%
+        -:   46:    
+        -:   47:    /*Intialize the game*/
+        1:   48:    memset(&state, 23, sizeof(struct gameState)); 
+        -:   49:    
+        1:   50:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        -:   51:    
+        1:   52:    state.whoseTurn = 4;
+        1:   53:    player = whoseTurn(&state);
+call    0 returned 100%
+        1:   54:    printf("Player %d Turn\n", player);
+call    0 returned 100%
+       1*:   55:    ASSERTTRUE((whoseTurn(&state) == 0),__LINE__);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0%
+call    3 returned 100%
+call    4 never executed
+        -:   56: 
+        1:   57:}
+        -:   58:/*Test for return values for initialized game with incorrect whose turn input*/
+function test2 called 1 returned 100% blocks executed 88%
+        1:   59:void test2() {
+        -:   60:    struct gameState state;
+        -:   61:    int r;
+        1:   62:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   63:                    remodel, smithy, village, baron, great_hall};
+        1:   64:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        -:   65:    
+        1:   66:    state.whoseTurn = 15693250560;
+        1:   67:    int player = whoseTurn(&state);
+call    0 returned 100%
+        1:   68:    printf("Player %d Turn\n", player);
+call    0 returned 100%
+       1*:   69:    ASSERTTRUE((whoseTurn(&state) > 0),__LINE__);
+call    0 returned 100%
+branch  1 taken 100% (fallthrough)
+branch  2 taken 0%
+call    3 returned 100%
+call    4 never executed
+        -:   70: 
+        1:   71:}
+        -:   72:
+function main called 1 returned 100% blocks executed 100%
+        1:   73:int main(int argc, char** argv) {
+        -:   74: 
+        1:   75:    printf("%%SUITE_STARTING%% unittest4\n");
+call    0 returned 100%
+        1:   76:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   77:    
+        1:   78:    printf("%%TEST_STARTED%% test1 (unittest1)\n");
+call    0 returned 100%
+        -:   79:    
+        1:   80:    test1();
+call    0 returned 100%
+        -:   81:    
+        1:   82:    printf("%%TEST_FINISHED%%\n");
+call    0 returned 100%
+        -:   83:
+        1:   84:    printf("%%TEST_STARTED%% test2 (unittest1)\n");
+call    0 returned 100%
+        -:   85:    
+        1:   86:    test2();
+call    0 returned 100%
+        -:   87:    
+        1:   88:    printf("%%TEST_FINISHED%% test2 (unittest1) \n");
+call    0 returned 100%
+        -:   89:
+        1:   90:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:   91:
+        1:   92:    return (EXIT_SUCCESS);
+        -:   93:}
+File 'cardtest1.c'
+Lines executed:88.00% of 25
+Branches executed:100.00% of 8
+Taken at least once:62.50% of 8
+Calls executed:75.00% of 16
+Creating 'cardtest1.c.gcov'
+
+        -:    0:Source:cardtest1.c
+        -:    0:Graph:./cardtest1.gcno
+        -:    0:Data:./cardtest1.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: cardtest1.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:
+        -:   23:/*
+        -:   24: * Simple C Test Suite
+        -:   25: */
+        -:   26:/*Part of the ASSERTTRUE test*/
+function aFailed called 0 returned 0% blocks executed 0%
+    #####:   27:void aFailed(int line){
+        -:   28:    
+    #####:   29:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 never executed
+    #####:   30:}
+        -:   31:/*First test of the smithy card functionality*/
+function test1 called 1 returned 100% blocks executed 81%
+        1:   32:void test1() {
+        -:   33:    int* bonus;
+        -:   34:    int card, choice1, choice2, choice3, handPos, ret,r;
+        -:   35:    struct gameState state;
+        -:   36:    
+        1:   37:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   38:                    remodel, smithy, village, baron, great_hall};
+        -:   39:    
+        -:   40:    
+        -:   41:    /*Initialize Game*/
+        1:   42:    memset(&state, 23, sizeof(struct gameState)); 
+        -:   43:    
+        1:   44:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        -:   45:    /*Test that game was initialized*/
+       1*:   46:    ASSERTTRUE(r != -1,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   47:
+        -:   48:   /*Test the Hand Count for Each of the Two Players*/
+        3:   49:    for(int i = 0; i < state.numPlayers; i++){
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        -:   50:        /*Adds an additional three cards with one discard*/
+        2:   51:        state.whoseTurn = i;
+        2:   52:        int storedHandCount = state.handCount[i]+2;
+        2:   53:        int storedPlayedCard = state.playedCardCount;
+        -:   54:        
+        2:   55:        ret = cardEffect(smithy,0,0,0,&state,1, 0);
+call    0 returned 100%
+        -:   56:        
+       2*:   57:        ASSERTTRUE(state.handCount[i] == storedHandCount,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   58:      
+       2*:   59:        ASSERTTRUE(state.playedCardCount > storedPlayedCard ,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        2:   60:        printf("Current Played Count Player[%d]:%d\n",i,state.playedCardCount);
+call    0 returned 100%
+        -:   61:
+        -:   62:    }
+        -:   63:    
+        1:   64:}
+        -:   65:
+function main called 1 returned 100% blocks executed 100%
+        1:   66:int main(int argc, char** argv) {
+        1:   67:    printf("%%SUITE_STARTING%% cardtest1\n");
+call    0 returned 100%
+        1:   68:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   69:
+        1:   70:    printf("%%TEST_STARTED%% test1 (cardtest1)\n");
+call    0 returned 100%
+        1:   71:    test1();
+call    0 returned 100%
+        1:   72:    printf("%%TEST_FINISHED%% test1 (cardtest1) \n");
+call    0 returned 100%
+        -:   73:
+        -:   74: 
+        1:   75:    printf("%%SUITE_FINISHED%% time=0\n");
+call    0 returned 100%
+        -:   76:
+        1:   77:    return (EXIT_SUCCESS);
+        -:   78:}
+File 'cardtest2.c'
+Lines executed:85.71% of 42
+Branches executed:100.00% of 26
+Taken at least once:76.92% of 26
+Calls executed:77.78% of 18
+Creating 'cardtest2.c.gcov'
+
+        -:    0:Source:cardtest2.c
+        -:    0:Graph:./cardtest2.gcno
+        -:    0:Data:./cardtest2.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: cardtest2.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:#include "interface.h"
+        -:   23:/*
+        -:   24: * Simple C Test Suite
+        -:   25: */
+        -:   26:/*Part of the ASSERTTRUE test*/
+function aFailed called 1 returned 100% blocks executed 100%
+        1:   27:void aFailed(int line){
+        -:   28:    
+        1:   29:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+        1:   30:}
+        -:   31:/*First test of the adventurer card functionality*/
+function test1 called 1 returned 100% blocks executed 79%
+        1:   32:void test1() {
+        1:   33:    int treasureBefore = 0, treasureAfter = 0, discardBeforeP1 = 0, discardAfterP1 = 0;
+        -:   34:    int* bonus;
+        -:   35:    int card, choice1, choice2, choice3, handPos, ret,r;
+        -:   36:    struct gameState state;
+        -:   37:    
+        1:   38:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   39:                    remodel, smithy, village, baron, great_hall};
+        -:   40:    
+        -:   41:    
+        -:   42:    /*Random Game Initialization Borrowed from betterTestDrawCard.c*/
+        1:   43:    memset(&state, 23, sizeof(struct gameState)); 
+        1:   44:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+        -:   45:    
+        -:   46:    /*Test that game was initialized*/
+       1*:   47:    ASSERTTRUE(r != -1,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   48:    /*Test to see if silver, copper or gold are present in deck if zero need to initalize the deck with treasure*/
+        3:   49:    for(int k = 0; k < 2; k++ ){
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+       12:   50:        for(int j = 0; j < 5; j++){        
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        -:   51:                              
+       10:   52:                if(state.hand[k][j] == copper){
+branch  0 taken 40% (fallthrough)
+branch  1 taken 60%
+        -:   53:                    //printf("Copper Found:Player %d\n",k);
+        4:   54:                    treasureBefore++;
+        6:   55:                }else if(state.hand[k][j] == gold){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   56:                    //printf("Gold Found:Player %d\n",k);
+    #####:   57:                    treasureBefore++;
+        -:   58:                    }
+        6:   59:                else if(state.hand[k][j] == silver){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+        -:   60:                    //printf("Silver Found:Player %d\n",k);
+    #####:   61:                    treasureBefore++;    
+        -:   62:                }
+        -:   63:            }
+        -:   64:       
+        -:   65:        }
+        -:   66:    /*Test to compare before and after Adventurer card is played*/
+        3:   67:    for(int k = 0; k < 2; k++ ){
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+        2:   68:        state.whoseTurn = k;
+        2:   69:        discardBeforeP1 = state.discardCount[k];
+        2:   70:        cardEffect(adventurer,0,0,0,&state,0, 0);
+call    0 returned 100%
+        -:   71:        
+       12:   72:        for(int j = 0; j < 5; j++){        
+branch  0 taken 83%
+branch  1 taken 17% (fallthrough)
+        -:   73:                
+       10:   74:                if(state.hand[k][j] == copper){
+branch  0 taken 60% (fallthrough)
+branch  1 taken 40%
+        6:   75:                    printf("Copper Found:Player %d\n",k);
+call    0 returned 100%
+        6:   76:                    treasureAfter++;
+        4:   77:                }else if(state.hand[k][j] == gold){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   78:                    printf("Gold Found:Player %d\n",k);
+call    0 never executed
+    #####:   79:                    treasureAfter++;
+        -:   80:                    }
+        4:   81:                else if(state.hand[k][j] == silver){
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+    #####:   82:                    printf("Silver Found:Player %d\n",k);
+call    0 never executed
+    #####:   83:                    treasureAfter++;    
+        -:   84:                }
+        -:   85:            }
+        -:   86:        /*Check the discard Pile to see if cards were discarded for player 1 only*/
+        2:   87:         ASSERTTRUE(discardBeforeP1 < state.discardCount[k],__LINE__);
+branch  0 taken 50% (fallthrough)
+branch  1 taken 50%
+call    2 returned 100%
+call    3 returned 100%
+        -:   88:        }
+        -:   89:    /*Check whether there is more treasure*/
+       1*:   90:    ASSERTTRUE(treasureBefore < treasureAfter,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   91:    
+        -:   92:    
+        -:   93:
+        1:   94:}
+function main called 1 returned 100% blocks executed 100%
+        1:   95:int main(int argc, char** argv) {
+        1:   96:    printf("%%SUITE_STARTING%% cardtest2\n");
+call    0 returned 100%
+        1:   97:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   98:
+        1:   99:    printf("%%TEST_STARTED%% test1 (cardtest2)\n");
+call    0 returned 100%
+        1:  100:    test1();
+call    0 returned 100%
+        1:  101:    printf("%%TEST_FINISHED%% test1 (cardtest2) \n");
+call    0 returned 100%
+        -:  102:
+        -:  103: 
+        1:  104:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:  105:
+        1:  106:    return (EXIT_SUCCESS);
+        -:  107:}
+File 'cardtest3.c'
+Lines executed:90.00% of 30
+Branches executed:100.00% of 10
+Taken at least once:60.00% of 10
+Calls executed:73.68% of 19
+Creating 'cardtest3.c.gcov'
+
+        -:    0:Source:cardtest3.c
+        -:    0:Graph:./cardtest3.gcno
+        -:    0:Data:./cardtest3.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: cardtest3.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:#include <time.h>
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:#include "interface.h"
+        -:   23:/*
+        -:   24: * Simple C Test Suite
+        -:   25: */
+        -:   26:/*Part of the ASSERTTRUE test*/
+function aFailed called 0 returned 0% blocks executed 0%
+    #####:   27:void aFailed(int line){
+        -:   28:    
+    #####:   29:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 never executed
+    #####:   30:}
+        -:   31:/*First test of the village card functionality*/
+function test1 called 1 returned 100% blocks executed 80%
+        1:   32:void test1() {
+        -:   33:   
+        -:   34:    
+        -:   35:    int card, choice1, choice2, choice3, handPosP1, handPosP2, ret,r;
+        -:   36:    struct gameState state;
+        -:   37:    
+        1:   38:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   39:                    remodel, smithy, village, baron, great_hall};
+        -:   40:    
+        -:   41:    /*Random Game Initialization Borrowed from betterTestDrawCard.c*/
+        1:   42:    memset(&state, 23, sizeof(struct gameState)); 
+        -:   43:    
+        -:   44:    /*Discard Hand Position*/
+        1:   45:    int handPosPlayer = 1;
+        -:   46:    /*Test that game was initialized*/
+        1:   47:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+       1*:   48:    ASSERTTRUE(r != -1,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   49:    /*Stored discard Postion*/
+        1:   50:    int cardtoDiscard = state.hand[0][handPosPlayer];
+        -:   51:    /*Stored Number of Actions*/
+        1:   52:    int numberOfAction = state.numActions;
+        1:   53:    printf("Number of Actions: %d", numberOfAction);
+call    0 returned 100%
+        -:   54:    /*Test Village function Discard for selected card */
+        -:   55: 
+        1:   56:    int cardsInHand = state.handCount[0];
+        -:   57:        
+        -:   58:    /*Selection for hand position to be discarded used to compare discard piles in Adventurer*/
+        1:   59:    cardEffect(village,0,0,0,&state,handPosPlayer, 0);
+call    0 returned 100%
+        -:   60:       
+        -:   61:    /*Test Players Hand Before Against After to make sure they're equal*/
+       1*:   62:    ASSERTTRUE(state.handCount[0] == cardsInHand,__LINE__);   
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   63:   
+        -:   64:    /*Test the discard for the players hand and the played cards*/
+        1:   65:    int sizeofPlayed = state.playedCardCount;
+        2:   66:    for(int i = 0; i < sizeofPlayed; i++){
+branch  0 taken 50%
+branch  1 taken 50% (fallthrough)
+       1*:   67:         ASSERTTRUE(state.playedCards[i] == cardtoDiscard,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   68:    }
+        -:   69:    
+        -:   70:    /*Test Number of Actions increases by two*/
+        1:   71:    numberOfAction += 2;
+       1*:   72:    ASSERTTRUE(numberOfAction == state.numActions,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        1:   73:    printf("Number of Actions: %d", state.numActions);
+call    0 returned 100%
+        1:   74:}
+function main called 1 returned 100% blocks executed 100%
+        1:   75:int main(int argc, char** argv) {
+        1:   76:    printf("%%SUITE_STARTING%% cardtest3\n");
+call    0 returned 100%
+        1:   77:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   78:
+        1:   79:    printf("%%TEST_STARTED%% test1 (cardtest3)\n");
+call    0 returned 100%
+        1:   80:    test1();
+call    0 returned 100%
+        1:   81:    printf("%%TEST_FINISHED%% test1 (cardtest3) \n");
+call    0 returned 100%
+        -:   82:
+        -:   83: 
+        1:   84:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:   85:
+        1:   86:    return (EXIT_SUCCESS);
+        -:   87:}
+File 'cardtest4.c'
+Lines executed:89.66% of 29
+Branches executed:100.00% of 10
+Taken at least once:60.00% of 10
+Calls executed:70.59% of 17
+Creating 'cardtest4.c.gcov'
+
+        -:    0:Source:cardtest4.c
+        -:    0:Graph:./cardtest4.gcno
+        -:    0:Data:./cardtest4.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * Assignment 3 CS362 Unit Test 1
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File: cardtest4.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * Created on October 18, 2018
+        -:   10: */
+        -:   11:
+        -:   12:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   13:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   14:#include <time.h>
+        -:   15:#include <time.h>
+        -:   16:#include <assert.h>
+        -:   17:#include <stdio.h>
+        -:   18:#include <stdlib.h>
+        -:   19:#include "dominion.h"
+        -:   20:#include "dominion_helpers.h"
+        -:   21:#include "rngs.h"
+        -:   22:#include "interface.h"
+        -:   23:/*
+        -:   24: * Simple C Test Suite
+        -:   25: */
+        -:   26:/*Part of the ASSERTTRUE test*/
+function aFailed called 0 returned 0% blocks executed 0%
+    #####:   27:void aFailed(int line){
+        -:   28:    
+    #####:   29:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 never executed
+    #####:   30:}
+        -:   31:/*First test of the Great Hall card functionality*/
+function test1 called 1 returned 100% blocks executed 78%
+        1:   32:void test1() {
+        -:   33:    
+        -:   34:    int r, numberActionsP1;
+        -:   35:    struct gameState state;
+        -:   36:    
+        1:   37:    int k[10] = {adventurer, council_room, feast, gardens, mine,
+        -:   38:                    remodel, smithy, village, baron, great_hall};
+        -:   39:    
+        -:   40:    /*Random Game Initialization Borrowed from betterTestDrawCard.c*/
+        1:   41:    memset(&state, 23, sizeof(struct gameState)); 
+        -:   42:    
+        -:   43:    /*Discard Hand Position*/
+        1:   44:    int handPosPlayer = 1;
+        -:   45:    
+        -:   46:    /*Test that game was initialized*/
+        1:   47:    r = initializeGame(2, k, 1, &state);
+call    0 returned 100%
+       1*:   48:    ASSERTTRUE(r != -1,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   49:    
+        -:   50:    /*Stored discard Postion*/
+        1:   51:    int cardtoDiscard = state.hand[0][handPosPlayer];
+        -:   52:    
+        -:   53:    /*Stored Number of Actions*/
+        1:   54:    int numberOfAction = state.numActions;
+        -:   55:    
+        -:   56:    /*Test Great Hall function Discard for selected card */
+        1:   57:    int cardsInHand = state.handCount[0];
+        -:   58:    
+        -:   59:    /*Selection for hand position to be discarded used to compare discard piles in Adventurer*/
+        1:   60:    cardEffect(great_hall,0,0,0,&state,handPosPlayer, 0);
+call    0 returned 100%
+        1:   61:    numberActionsP1 = state.numActions;
+        -:   62:    /*Test Players Hand Before Against After to make sure they're equal*/
+       1*:   63:    ASSERTTRUE(state.handCount[0] == cardsInHand,__LINE__);   
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   64:    
+        -:   65:    /*Test the discard for the players hand and the played cards*/
+        1:   66:    int sizeofPlayed = state.playedCardCount;
+        2:   67:    for(int i = 0; i < sizeofPlayed; i++){
+branch  0 taken 50%
+branch  1 taken 50% (fallthrough)
+       1*:   68:         ASSERTTRUE(state.playedCards[i] == cardtoDiscard,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   69:    }
+        -:   70:    /*Test Number of Actions increases by one*/
+        1:   71:    numberOfAction++;
+        -:   72:    
+       1*:   73:    ASSERTTRUE(numberOfAction == numberActionsP1,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   74:    
+        1:   75:}
+function main called 1 returned 100% blocks executed 100%
+        1:   76:int main(int argc, char** argv) {
+        1:   77:    printf("%%SUITE_STARTING%% cardtest4\n");
+call    0 returned 100%
+        1:   78:    printf("%%SUITE_STARTED%%\n");
+call    0 returned 100%
+        -:   79:
+        1:   80:    printf("%%TEST_STARTED%% test1 (cardtest4)\n");
+call    0 returned 100%
+        1:   81:    test1();
+call    0 returned 100%
+        1:   82:    printf("%%TEST_FINISHED%% test1 (cardtest4) \n");
+call    0 returned 100%
+        1:   83:    printf("%%SUITE_FINISHED%%\n");
+call    0 returned 100%
+        -:   84:
+        1:   85:    return (EXIT_SUCCESS);
+        -:   86:}

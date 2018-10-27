@@ -7,6 +7,7 @@
 
 
 
+
 int compare(const void* a, const void* b) {
   if (*(int*)a > *(int*)b)
     return 1;
@@ -38,13 +39,16 @@ int* kingdomCards(int k1, int k2, int k3, int k4, int k5, int k6, int k7,
 /***********************************************************************
  * Refractored Code Section Assignment 2 Smithy card functionality
 **Inputs: Hand Position, Player, Game Structure
-**Outputs: What should this return?*/
+**Outputs: What should this return?
+ *Changes: Initially only should add three cards
+ **********************************************************************/
 void smithyFunction(int handPos,int player,struct gameState* state){
     for (int i = 0; i < 3; i++)
 	{
 	  drawCard(player, state);
 	}
      discardCard(handPos, player, state, 0);
+    
      
      //return 0;
 }
@@ -93,7 +97,7 @@ void villageFunction(int handPos, int currentPlayer, struct gameState* state){
 			
       //discard played card from hand
       //discardedCard(handPos, currentPlayer,state,0) //*Original
-      discardCard(1, currentPlayer, state, 0);
+      discardCard(handPos, currentPlayer, state, 0);
       
       //return 0;
     
@@ -188,7 +192,7 @@ int initializeGame(int numPlayers, int kingdomCards[10], int randomSeed,
     {
       state->supplyCount[estate] = 12;
       state->supplyCount[duchy] = 12;
-      state->supplyCount[province] = 12;
+      state->supplyCount[province] = 8;
     }
 
   //set number of Treasure cards
@@ -669,6 +673,7 @@ int drawCard(int player, struct gameState *state)
     state->hand[player][count] = state->deck[player][deckCounter - 1];//Add card to the hand
     state->deckCount[player]--;
     state->handCount[player]++;//Increment hand count
+    //printf("Player: %d\nDraw HandCount:%d\n",player,state->handCount[player]);
   }
 
   return 0;
