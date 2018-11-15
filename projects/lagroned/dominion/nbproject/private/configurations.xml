@@ -43,6 +43,9 @@
       <in>interface.h</in>
       <in>playdom.c</in>
       <in>player.c</in>
+      <in>randomTestAdventurer.c</in>
+      <in>randomTestCard1.c</in>
+      <in>randomTestCard2.c</in>
       <in>rngs.c</in>
       <in>rngs.h</in>
       <in>rt.c</in>
@@ -93,9 +96,10 @@
         <runcommandpicklist>
           <runcommandpicklistitem>"${OUTPUT_PATH}"</runcommandpicklistitem>
           <runcommandpicklistitem>"${OUTPUT_PATH}" ./playdom 2</runcommandpicklistitem>
+          <runcommandpicklistitem>"${OUTPUT_PATH}" ./randomTestCard1</runcommandpicklistitem>
         </runcommandpicklist>
-        <runcommand>"${OUTPUT_PATH}" ./playdom 2</runcommand>
-        <arguments>./playdom 2</arguments>
+        <runcommand>"${OUTPUT_PATH}" ./randomTestCard1</runcommand>
+        <arguments>./randomTestCard1</arguments>
         <rundir>.</rundir>
         <buildfirst>false</buildfirst>
         <terminal-type>0</terminal-type>

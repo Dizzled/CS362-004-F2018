@@ -6,6 +6,7 @@
       <in>dominion.c</in>
       <in>interface.c</in>
       <in>playdom.c</in>
+      <in>randomTestAdventurer.c</in>
       <in>rngs.c</in>
     </df>
     <logicalFolder name="ExternalFiles"
@@ -74,6 +75,8 @@
             <pElem>.</pElem>
           </incDir>
         </cTool>
+      </item>
+      <item path="randomTestAdventurer.c" ex="false" tool="0" flavor2="0">
       </item>
       <item path="rngs.c" ex="false" tool="0" flavor2="3">
         <cTool flags="1">
