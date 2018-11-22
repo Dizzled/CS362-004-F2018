@@ -1,0 +1,12 @@
+called: gcc
+	/root/Documents/OSU/362/CS362-004-F2018/projects/lagroned/kamila
+	gcc
+	-c
+	rngs.c
+	-g
+	-Wall
+	-lm
+	-fpic
+	-coverage
+	-std=c99
+

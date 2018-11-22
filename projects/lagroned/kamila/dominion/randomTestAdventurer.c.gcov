@@ -1,0 +1,386 @@
+        -:    0:Source:randomTestAdventurer.c
+        -:    0:Graph:randomTestAdventurer.gcno
+        -:    0:Data:randomTestAdventurer.gcda
+        -:    0:Runs:1
+        -:    0:Programs:1
+        -:    1:/*
+        -:    2: * This is a random tester of the Adventurer card
+        -:    3: * 
+        -:    4: */
+        -:    5:
+        -:    6:/* 
+        -:    7: * File:   randomtestcard1.c
+        -:    8: * Author: Dustin LaGrone
+        -:    9: * November 6, 2018
+        -:   10: */
+        -:   11:#define ASSERTTRUE(BoolCondition,__LINE__) do { if (!(BoolCondition)) { aFailed(__LINE__); } \
+        -:   12:else{printf("ASSERTION TRUE! line:%d\n",__LINE__);}} while (0)
+        -:   13:
+        -:   14:#include <time.h>
+        -:   15:#include <assert.h>
+        -:   16:#include <stdio.h>
+        -:   17:#include <stdlib.h>
+        -:   18:#include <string.h>
+        -:   19:#include <math.h>
+        -:   20:#include "dominion.h"
+        -:   21:#include "dominion_helpers.h"
+        -:   22:#include "rngs.h"
+        -:   23:
+        -:   24:/*
+        -:   25: * Simple C Test Suite
+        -:   26: */
+        -:   27:/*Part of the ASSERTTRUE test*/
+function aFailed called 569 returned 100% blocks executed 100%
+      569:   28:void aFailed(int line){
+        -:   29:    
+      569:   30:    printf("ASSERTION FALSE! line: %d\n",line);
+call    0 returned 100%
+      569:   31:}
+        -:   32:
+function checkAdventurerCard called 10000 returned 100% blocks executed 97%
+    10000:   33:int checkAdventurerCard(int player, struct gameState* post, int handPos){
+        -:   34:    
+        -:   35:    
+        -:   36:    struct gameState pre;
+        -:   37:    
+    10000:   38:    memcpy(&pre,post, sizeof(struct gameState));
+        -:   39:    
+    10000:   40:    int discardAfter, treasureBefore = 0, treasureAfter = 0, count = 0;
+        -:   41:    
+        -:   42:    /*Dont Forget to Free Used to Test Treasure in Deck Against Treasure in Hand*/
+    10000:   43:    int* storedTreasure = (int*)malloc( 2 * sizeof(int));
+        -:   44:    
+        -:   45:    /*Need to test against the the Deck to check and see what cards
+        -:   46:     *Are going to be drawn store those and verify they are in fact in the hand*/
+    10000:   47:    int storedDeckCount = post->deckCount[player] - 1;
+    10000:   48:    int storedHandCount = post->handCount[player];
+        -:   49:    
+    10000:   50:    if(storedDeckCount < 0){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+       25:   51:        printf("Deck Uninitialized!!\n");
+call    0 returned 100%
+       25:   52:        return 1;
+        -:   53:    }
+     9975:   54:    if(storedHandCount <= 0){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+        1:   55:        printf("Hand Uninitialized!!\n");
+call    0 returned 100%
+        1:   56:        return 1;
+        -:   57:    }
+        -:   58:    
+     9974:   59:    int storedDiscardCount = pre.discardCount[player];
+        -:   60:    
+   193041:   61:    while(count < 2){
+branch  0 taken 95%
+branch  1 taken 5% (fallthrough)
+        -:   62:        
+   183067:   63:        if(post->deck[player][storedDeckCount] == copper){
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+        -:   64:            
+     6641:   65:            printf("Struck Copper! Stored @ %d\n",count);
+call    0 returned 100%
+     6641:   66:            storedTreasure[count] = post->deck[player][storedDeckCount];
+     6641:   67:            post->deck[player][storedDeckCount--];
+     6641:   68:            count++;
+        -:   69:            
+   176426:   70:        }else if(post->deck[player][storedDeckCount] == silver){
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+        -:   71:            
+     6576:   72:            printf("Struck Silver! Stored @ %d\n",count);
+call    0 returned 100%
+     6576:   73:            storedTreasure[count] = post->deck[player][storedDeckCount];
+     6576:   74:            post->deck[player][storedDeckCount--];
+     6576:   75:            count++;
+        -:   76:            
+   169850:   77:        }else if(post->deck[player][storedDeckCount] == gold){
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+        -:   78:            
+     6731:   79:            printf("Struck Gold! Stored @ %d\n",count);
+call    0 returned 100%
+     6731:   80:            storedTreasure[count] = post->deck[player][storedDeckCount];
+     6731:   81:            post->deck[player][storedDeckCount--];
+     6731:   82:            count++;
+        -:   83:            
+        -:   84:        }else{
+        -:   85:            
+   163119:   86:            storedDiscardCount++; //Card is not treasure and will be discarded;
+   163119:   87:            post->deck[player][storedDeckCount--]; //Decrement the deck for the next potential treasure
+        -:   88:        }
+        -:   89:    }
+        -:   90:    
+    29922:   91:    for(int i = 0; i < count; i++){
+branch  0 taken 67%
+branch  1 taken 33% (fallthrough)
+    19948:   92:        if(storedTreasure[i] != copper && storedTreasure[i] != silver && storedTreasure[i] != gold){
+branch  0 taken 67% (fallthrough)
+branch  1 taken 33%
+branch  2 taken 51% (fallthrough)
+branch  3 taken 49%
+branch  4 taken 0% (fallthrough)
+branch  5 taken 100%
+    #####:   93:            printf("NO TREASURE IN DECK!!\n");
+call    0 never executed
+        -:   94:                    
+        -:   95:        }
+        -:   96:    }
+    9974*:   97:    ASSERTTRUE(storedTreasure != NULL,__LINE__);
+branch  0 taken 0% (fallthrough)
+branch  1 taken 100%
+call    2 never executed
+call    3 returned 100%
+        -:   98:    //discardBefore = post->discardCount[player];
+        -:   99:    
+     9974:  100:    cardEffect(adventurer,0,0,0,post,handPos, 0);
+call    0 returned 100%
+        -:  101:    
+     9974:  102:    discardAfter = post->discardCount[player];
+        -:  103:    
+        -:  104:    /*Check the discard Pile to see if cards that were drawn are also discarded*/
+     9974:  105:    ASSERTTRUE(storedDiscardCount == discardAfter,__LINE__);
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+call    2 returned 100%
+call    3 returned 100%
+     9974:  106:    if(storedDiscardCount != discardAfter){
+branch  0 taken 4% (fallthrough)
+branch  1 taken 96%
+      401:  107:        printf("stored cards not equal:\nExpected Discard Count:%d\nDiscard Count After:%d\n",storedDiscardCount,discardAfter);
+call    0 returned 100%
+        -:  108:    }
+        -:  109:    
+  2499738:  110:    for(int j = 0; j < pre.handCount[player]; j++){        
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:  111:                              
+  2489764:  112:            if(pre.hand[player][j] == copper){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+        -:  113:                //printf("Copper Found:Player %d\n",k);
+    26261:  114:                treasureBefore++;
+  2463503:  115:            }else if(pre.hand[player][j] == gold){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+        -:  116:                //printf("Gold Found:Player %d\n",k);
+    27278:  117:                treasureBefore++;
+        -:  118:                }
+  2436225:  119:            else if(pre.hand[player][j] == silver){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+        -:  120:                //printf("Silver Found:Player %d\n",k);
+    26373:  121:                treasureBefore++;    
+        -:  122:                }
+        -:  123:        }
+        -:  124:    
+     9974:  125:    treasureAfter = treasureBefore;
+        -:  126:    /*Post Test Case for last added cards to check against Deck Treasure Cards to be drawn.3*/
+    19973:  127:    for(int k = 1; k >= 0; k--){
+branch  0 taken 50%
+branch  1 taken 50% (fallthrough)
+  2511921:  128:        for(int j = post->handCount[player] - 1; j >= 0; j--){        
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:  129:                
+  2501922:  130:                if(post->hand[player][j] == copper && post->hand[player][j] == storedTreasure[k]){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 19% (fallthrough)
+branch  3 taken 81%
+        -:  131:                    
+     6121:  132:                    printf("Copper Found and Added:Player %d\n",player);
+call    0 returned 100%
+     6121:  133:                    treasureAfter++;
+     6121:  134:                    k--;
+  2495801:  135:                }else if(post->hand[player][j] == gold && post->hand[player][j] == storedTreasure[k]){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 19% (fallthrough)
+branch  3 taken 81%
+        -:  136:                    
+     6321:  137:                    printf("Gold Found and Added:Player %d\n",player);
+call    0 returned 100%
+     6321:  138:                    treasureAfter++;
+     6321:  139:                    k--;
+        -:  140:                    
+  2489480:  141:                }else if(post->hand[player][j] == silver && post->hand[player][j] == storedTreasure[k]){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+branch  2 taken 19% (fallthrough)
+branch  3 taken 81%
+        -:  142:                    
+     6121:  143:                    printf("Silver Found and Added:Player %d\n",player);
+call    0 returned 100%
+     6121:  144:                    treasureAfter++;
+     6121:  145:                    k--;
+        -:  146:                }
+        -:  147:            }
+        -:  148:        
+        -:  149:    }
+        -:  150:    /*Check that there's more treasure cards in the hand */
+     9974:  151:    if(treasureBefore == treasureAfter){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+        8:  152:        printf("No Additional Treasure in Deck\n");
+call    0 returned 100%
+        -:  153:    }
+     9974:  154:    ASSERTTRUE(treasureBefore < treasureAfter,__LINE__);
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+call    2 returned 100%
+call    3 returned 100%
+     9974:  155:    int preHand = pre.handCount[player];
+     9974:  156:    int postHand = post->handCount[player];
+        -:  157:    /*Check that only two cards have been added to the hand*/
+     9974:  158:    ASSERTTRUE(preHand + 1 == postHand,__LINE__);
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+call    2 returned 100%
+call    3 returned 100%
+        -:  159:    
+     9974:  160:    if(preHand + 1 != postHand){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+       69:  161:        printf("Pre-Hand:%d\nPost-Hand:%d\n",preHand,postHand);
+call    0 returned 100%
+        -:  162:    }
+     9974:  163:    free(storedTreasure);
+     9974:  164:    return 0;
+        -:  165:        
+        -:  166:}
+function test1 called 1 returned 100% blocks executed 100%
+        1:  167:void test1() {
+        -:  168:    
+        -:  169:    struct gameState state; 
+        -:  170:    /*Test to see if silver, copper or gold are present in deck if zero need to initalize the deck with treasure*/
+        1:  171:    SelectStream(2);
+call    0 returned 100%
+        1:  172:    PutSeed(3);
+call    0 returned 100%
+        -:  173:    
+    10001:  174:    for(int numberOfRun = 0; numberOfRun <  10000; numberOfRun++){
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:  175:       
+        -:  176:        /*Random Game Initialization Borrowed from betterTestDrawCard.c*/
+        -:  177:        
+        -:  178:       
+    10000:  179:        int  player = floor(Random() * MAX_PLAYERS);
+call    0 returned 100%
+        -:  180:        
+    10000:  181:        state.whoseTurn = player;
+        -:  182:        
+        -:  183:        /*Modify the Deck with randomly initlized values
+        -:  184:         * To check if the adventurer function is selecting 
+        -:  185:         * Copper, Silver or Gold*/
+    10000:  186:        state.deckCount[player] = floor(Random() * MAX_DECK);
+call    0 returned 100%
+    10000:  187:        state.playedCardCount = 0;
+        -:  188:       
+  2481913:  189:        for(int i = 0; i < state.deckCount[player]; i++){
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+        -:  190:          
+  2471913:  191:            state.deck[player][i] = floor(Random() * 27);
+call    0 returned 100%
+        -:  192:        }
+        -:  193:        
+    10000:  194:        state.handCount[player] = floor(Random() * MAX_HAND);
+call    0 returned 100%
+        -:  195:        
+        -:  196:        
+        -:  197:        /*Randomize each card in randomized hand count*/
+  2493983:  198:        for(int k = 1; k < state.handCount[player]; k++){
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+  2483983:  199:            state.hand[player][k] = floor(Random() * 100);
+call    0 returned 100%
+        -:  200:        }
+        -:  201:        /*Randomly initiate a discard Pile with cards*/
+  2567443:  202:        for(int a = 0; a < state.discardCount[player]; a++){
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+  2557443:  203:            state.discard[player][a] = floor(Random() * 27);
+call    0 returned 100%
+        -:  204:        
+        -:  205:        }
+        -:  206:        /*Randomly Distribute Supply*/
+   280000:  207:        for(int m = 0; m < 27; m++){
+branch  0 taken 96%
+branch  1 taken 4% (fallthrough)
+   270000:  208:            state.supplyCount[m] = floor(Random() * 27);
+call    0 returned 100%
+        -:  209:        }
+        -:  210:        
+    10000:  211:        int handPos = 0;
+        -:  212:        /*Add the Adventurer card to the players hand to be used*/
+  2503960:  213:        for(int x = 0; x < state.handCount[player]; x++){
+branch  0 taken 99%
+branch  1 taken 1% (fallthrough)
+  2493960:  214:            if(state.hand[player][x] == adventurer){
+branch  0 taken 1% (fallthrough)
+branch  1 taken 99%
+    24929:  215:                handPos = x;
+    24929:  216:                printf("Adventurer found in Hand!!!\n");
+call    0 returned 100%
+        -:  217:            }
+        -:  218:        }
+    10000:  219:        if(handPos == 0){
+branch  0 taken 20% (fallthrough)
+branch  1 taken 80%
+        -:  220:            
+     2001:  221:            ASSERTTRUE(gainCard(adventurer,&state,2,player)== 0,__LINE__);
+call    0 returned 100%
+branch  1 taken 3% (fallthrough)
+branch  2 taken 97%
+call    3 returned 100%
+call    4 returned 100%
+     2001:  222:            handPos = state.handCount[player] - 1;
+     2001:  223:            printf("Adventurer Added to Hand!!!\n");        
+call    0 returned 100%
+        -:  224:        }
+        -:  225:        
+    10000:  226:        ASSERTTRUE(checkAdventurerCard(player, &state, handPos) == 0,__LINE__);
+call    0 returned 100%
+branch  1 taken 1% (fallthrough)
+branch  2 taken 99%
+call    3 returned 100%
+call    4 returned 100%
+        -:  227:    }
+        1:  228:}
+        -:  229:     
+        -:  230: 
+        -:  231:
+function main called 1 returned 100% blocks executed 100%
+        1:  232:int main(int argc, char** argv) {
+        1:  233:    printf("%%SUITE_STARTING%% randomtestcard1\n");
+call    0 returned 100%
+        -:  234:    
+        -:  235:
+        1:  236:    printf("%%TEST_STARTED%% test1\n");
+call    0 returned 100%
+        -:  237:    clock_t start, stop;
+        -:  238:    
+        1:  239:    start = clock();
+call    0 returned 100%
+        1:  240:    test1();
+call    0 returned 100%
+        1:  241:    stop = clock();
+call    0 returned 100%
+        -:  242:    
+        1:  243:    double totalTime = ((double)(stop - start) / CLOCKS_PER_SEC);
+        -:  244:   
+        1:  245:    printf("%%TEST_FINISHED%% \n");
+call    0 returned 100%
+        -:  246:    
+        1:  247:    printf("Time taken:%.3f\n", totalTime);
+call    0 returned 100%
+        -:  248:    
+        1:  249:    printf("%%SUITE_FINISHED%% \n");
+call    0 returned 100%
+        -:  250:
+        1:  251:    return (EXIT_SUCCESS);
+        -:  252:}
