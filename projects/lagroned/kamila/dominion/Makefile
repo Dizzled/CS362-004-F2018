@@ -9,14 +9,6 @@ dominion.o: dominion.h dominion.c rngs.o
 playdom: dominion.o playdom.c
 	gcc -o playdom playdom.c -g dominion.o rngs.o $(CFLAGS)
 #To run playdom you need to entere: ./playdom <any integer number> like ./playdom 10*/
-testDrawCard: testDrawCard.c dominion.o rngs.o
-	gcc  -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
-
-badTestDrawCard: badTestDrawCard.c dominion.o rngs.o
-	gcc -o badTestDrawCard -g  badTestDrawCard.c dominion.o rngs.o $(CFLAGS)
-
-testBuyCard: testDrawCard.c dominion.o rngs.o
-	gcc -o testDrawCard -g  testDrawCard.c dominion.o rngs.o $(CFLAGS)
 
 testAll: dominion.o testSuite.c
 	gcc -o testSuite testSuite.c -g  dominion.o rngs.o $(CFLAGS)
@@ -27,6 +19,7 @@ interface.o: interface.h interface.c
 randomTestCards: 
 	gcc -o randomTestAdventurer -g randomTestAdventurer.c dominion.o rngs.o $(CFLAGS)
 	gcc -o randomTestCard1 -g randomTestCard1.c dominion.o rngs.o $(CFLAGS)
+	gcc -o randomTestCard2 -g randomTestCard2.c dominion.o rngs.o $(CFLAGS)
 
 runtests: randomTestCards 
 	./randomTestAdventurer 
@@ -36,6 +29,10 @@ runtests: randomTestCards
 	./randomTestCard1 
 	gcov -b randomTestCard1.c >> randomtestcard1.out
 	cat randomTestCard1.c.gcov >> randomtestcard1.out
+	
+	./randomTestCard2 
+	gcov -b randomTestCard2.c >> randomtestcard2.out
+	cat randomTestCard2.c.gcov >> randomtestcard2.out
 
 
 player: player.c interface.o
